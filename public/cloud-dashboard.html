@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Monitoring Dashboard</title>
+    <link rel="stylesheet" href="cloud-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cloud Monitoring Dashboard</h1>
+            <div class="nav-links">
+                <a href="index.html">Quản lý Sản phẩm</a>
+                <a href="cloud-dashboard.html">Cloud Dashboard</a>
+                <a href="replication.html">Data Replication</a>
+                <a href="loadbalancer.html">Load Balancer</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-container">
+            <div class="metrics-panel">
+                <h2>System Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>CPU Usage</h3>
+                        <div class="metric-value" id="cpuUsage">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="cpuBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Memory Usage</h3>
+                        <div class="metric-value" id="memoryUsage">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="memoryBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Auto-scaling</h3>
+                        <div class="metric-value" id="instanceCount">1 instance</div>
+                        <div id="scaleStatus">No recent scaling actions</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Request Rate</h3>
+                        <div class="metric-value" id="requestRate">0 req/min</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h2>Response Time Monitoring</h2>
+                <canvas id="responseTimeChart"></canvas>
+            </div>
+            
+            <div class="logs-container">
+                <h2>Application Logs</h2>
+                <div class="logs-header">
+                    <div class="log-filter">
+                        <label for="logLevel">Filter by level:</label>
+                        <select id="logLevel">
+                            <option value="all">All Levels</option>
+                            <option value="info">Info</option>
+                            <option value="error">Error</option>
+                            <option value="warning">Warning</option>
+                            <option value="performance">Performance</option>
+                        </select>
+                    </div>
+                    <button id="refreshLogs">Refresh Logs</button>
+                </div>
+                <div class="logs-table-container">
+                    <table class="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Level</th>
+                                <th>Message</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="cloud-script.js"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 const { pool } = require('../config/db');
+const cloudReplication = require('../cloud/replication');
 
 // Lấy tất cả sản phẩm
 const getAllProducts = async (req, res) => {
@@ -27,7 +28,7 @@ const getProductById = async (req, res) => {
   }
 };
 
-// Thêm sản phẩm mới
+// Sửa đổi hàm addProduct
 const addProduct = async (req, res) => {
   const { name, price } = req.body;
   if (!name || !price) {
@@ -35,14 +36,26 @@ const addProduct = async (req, res) => {
   }
 
   try {
+    // Thêm vào database
     const [result] = await pool.execute("INSERT INTO products (name, price) VALUES (?, ?)", [name, price]);
-    res.status(201).json({ message: "Sản phẩm được thêm thành công!", id: result.insertId });
+    
+    // Sao chép dữ liệu sản phẩm vào các region (cloud simulation)
+    const replicationResult = await cloudReplication.replicateData(
+      `product_${result.insertId}`, 
+      { id: result.insertId, name, price }
+    );
+    
+    res.status(201).json({ 
+      message: "Sản phẩm được thêm thành công!", 
+      id: result.insertId,
+      cloudReplication: replicationResult
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// Cập nhật sản phẩm
+// Sửa đổi hàm updateProduct
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, price } = req.body;
@@ -57,14 +70,23 @@ const updateProduct = async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
     }
+    
+    // Sao chép dữ liệu cập nhật vào các region
+    const replicationResult = await cloudReplication.replicateData(
+      `product_${id}`, 
+      { id: parseInt(id), name, price }
+    );
 
-    res.json({ message: "Sản phẩm đã được cập nhật" });
+    res.json({ 
+      message: "Sản phẩm đã được cập nhật",
+      cloudReplication: replicationResult
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// Xóa sản phẩm
+// Sửa đổi hàm deleteProduct
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -74,8 +96,17 @@ const deleteProduct = async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
     }
+    
+    // Sao chép thông tin xóa vào các region
+    const replicationResult = await cloudReplication.replicateData(
+      `product_${id}`, 
+      { id: parseInt(id), deleted: true, deletedAt: new Date().toISOString() }
+    );
 
-    res.json({ message: "Sản phẩm đã bị xóa" });
+    res.json({ 
+      message: "Sản phẩm đã bị xóa",
+      cloudReplication: replicationResult
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

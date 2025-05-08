@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Data Replication</title>
+    <link rel="stylesheet" href="cloud-style.css">
+    <style>
+        .region-map {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .region-row {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .region-node {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #e3f2fd;
+            border: 2px solid #2196F3;
+            transition: all 0.3s;
+        }
+        
+        .region-node.down {
+            background-color: #ffebee;
+            border-color: #f44336;
+            opacity: 0.7;
+        }
+        
+        .region-node h3 {
+            margin: 0;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .region-node p {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+        
+        .data-replication {
+            margin-top: 30px;
+        }
+        
+        .replication-status {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .replication-status-item {
+            text-align: center;
+        }
+        
+        .replication-status-item h3 {
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        .replication-status-item p {
+            margin: 5px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .replication-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .replication-actions button {
+            flex: 1;
+        }
+        
+        .replication-data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .replication-data-table th, .replication-data-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .replication-data-table th {
+            background-color: #f2f2f2;
+        }
+        
+        .data-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background-color: #e3f2fd;
+            margin: 2px;
+            font-size: 12px;
+        }
+        
+        .replication-animation {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            z-index: 100;
+            transition: all 0.5s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cloud Data Replication</h1>
+            <div class="nav-links">
+                <a href="index.html">Quản lý Sản phẩm</a>
+                <a href="cloud-dashboard.html">Cloud Dashboard</a>
+                <a href="replication.html">Data Replication</a>
+                <a href="loadbalancer.html">Load Balancer</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-container">
+            <div class="metrics-panel">
+                <h2>Regions & Replication Status</h2>
+                
+                <div class="replication-status">
+                    <div class="replication-status-item">
+                        <h3>Active Regions</h3>
+                        <p id="activeRegions">0/0</p>
+                    </div>
+                    <div class="replication-status-item">
+                        <h3>Replication Factor</h3>
+                        <p id="replicationFactor">0</p>
+                    </div>
+                    <div class="replication-status-item">
+                        <h3>Total Replications</h3>
+                        <p id="totalReplications">0</p>
+                    </div>
+                    <div class="replication-status-item">
+                        <h3>Success Rate</h3>
+                        <p id="successRate">0%</p>
+                    </div>
+                </div>
+                
+                <div class="region-map" id="regionMap">
+                    <!-- Region nodes will be added here dynamically -->
+                </div>
+                
+                <div class="replication-actions">
+                    <button id="simulateAsia" class="action-btn">Simulate Asia Outage</button>
+                    <button id="simulateUS" class="action-btn">Simulate US Outage</button>
+                    <button id="simulateEurope" class="action-btn">Simulate Europe Outage</button>
+                </div>
+            </div>
+            
+            <div class="data-replication">
+                <h2>Replicated Data</h2>
+                <table class="replication-data-table">
+                    <thead>
+                        <tr>
+                            <th>Data Key</th>
+                            <th>Timestamp</th>
+                            <th>Replicated To</th>
+                        </tr>
+                    </thead>
+                    <tbody id="replicatedDataTable">
+                        <!-- Data will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Base URL
+        const API_URL = window.location.origin;
+        let refreshInterval;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch initial data
+            fetchReplicationStatus();
+            fetchReplicatedData();
+            
+            // Setup auto-refresh
+            refreshInterval = setInterval(() => {
+                fetchReplicationStatus();
+                fetchReplicatedData();
+            }, 5000);
+            
+            // Setup region outage buttons
+            document.getElementById('simulateAsia').addEventListener('click', () => {
+                simulateRegionOutage('asia-southeast1');
+            });
+            
+            document.getElementById('simulateUS').addEventListener('click', () => {
+                simulateRegionOutage('us-central1');
+            });
+            
+            document.getElementById('simulateEurope').addEventListener('click', () => {
+                simulateRegionOutage('europe-west1');
+            });
+        });
+        
+        // Fetch replication status
+        async function fetchReplicationStatus() {
+            try {
+                const response = await fetch(`${API_URL}/cloud/replication/status`);
+                const data = await response.json();
+                updateReplicationStatus(data);
+            } catch (error) {
+                console.error('Error fetching replication status:', error);
+            }
+        }
+        
+        // Fetch replicated data
+        async function fetchReplicatedData() {
+            try {
+                const response = await fetch(`${API_URL}/cloud/replication/data`);
+                const result = await response.json();
+                updateReplicatedDataTable(result.data);
+            } catch (error) {
+                console.error('Error fetching replicated data:', error);
+            }
+        }
+        
+        // Simulate region outage
+        async function simulateRegionOutage(region) {
+            try {
+                const response = await fetch(`${API_URL}/cloud/replication/simulate-outage/${region}`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                console.log(data.message);
+                
+                // Refresh data immediately
+                fetchReplicationStatus();
+            } catch (error) {
+                console.error('Error simulating outage:', error);
+            }
+        }
+        
+        // Update replication status display
+        function updateReplicationStatus(data) {
+            // Update status indicators
+            document.getElementById('activeRegions').textContent = 
+                `${data.activeRegions}/${data.totalRegions}`;
+            document.getElementById('replicationFactor').textContent = 
+                data.replicationFactor;
+            document.getElementById('totalReplications').textContent = 
+                data.stats.totalReplications;
+                
+            const successRate = data.stats.totalReplications > 0 
+                ? Math.round((data.stats.successfulReplications / data.stats.totalReplications) * 100) 
+                : 0;
+            document.getElementById('successRate').textContent = `${successRate}%`;
+            
+            // Update region map
+            const regionMap = document.getElementById('regionMap');
+            regionMap.innerHTML = ''; // Clear existing nodes
+            
+            // Create region row
+            const regionRow = document.createElement('div');
+            regionRow.className = 'region-row';
+            
+            // Add region nodes
+            data.regions.forEach(region => {
+                const regionNode = document.createElement('div');
+                regionNode.className = `region-node ${region.status === 'active' ? 'active' : 'down'}`;
+                regionNode.innerHTML = `
+                    <h3>${formatRegionName(region.name)}</h3>
+                    <p>Status: ${region.status}</p>
+                    <p>Latency: ${region.latency}ms</p>
+                `;
+                regionRow.appendChild(regionNode);
+            });
+            
+            regionMap.appendChild(regionRow);
+        }
+        
+        // Update replicated data table
+        function updateReplicatedDataTable(data) {
+            const tableBody = document.getElementById('replicatedDataTable');
+            tableBody.innerHTML = ''; // Clear existing rows
+            
+            // Sort data by timestamp (newest first)
+            data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                const formattedTime = new Date(item.timestamp).toLocaleString();
+                
+                // Create regions pills
+                const regionPills = item.regions.map(region => 
+                    `<span class="data-pill">${formatRegionName(region)}</span>`
+                ).join('');
+                
+                row.innerHTML = `
+                    <td>${item.key}</td>
+                    <td>${formattedTime}</td>
+                    <td>${regionPills}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Format region name for display
+        function formatRegionName(name) {
+            switch(name) {
+                case 'asia-southeast1':
+                    return 'Asia Southeast';
+                case 'us-central1':
+                    return 'US Central';
+                case 'europe-west1':
+                    return 'Europe West';
+                default:
+                    return name;
+            }
+        }
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            clearInterval(refreshInterval);
+        });
+    </script>
+</body>
+</html>
