@@ -92,13 +92,13 @@ function updateDashboardMetrics(data) {
     document.getElementById('memoryBar').style.backgroundColor = getColorForPercentage(memoryUsage);
     
     // Instances
-    document.getElementById('instanceCount').textContent = `${data.cloud.instances} instances`;
+    document.getElementById('instanceCount').textContent = `${data.cloud.instances} ví dụ`;
     
     if (data.cloud.lastScaleAction) {
-        const action = data.cloud.lastScaleAction.action === 'scale_up' ? 'scaled up' : 'scaled down';
+        const action = data.cloud.lastScaleAction.action === 'mở rộng quy mô' ? 'tăng quy mô' : 'giảm quy mô';
         const time = new Date(data.cloud.lastScaleAction.timestamp).toLocaleTimeString();
         document.getElementById('scaleStatus').textContent = 
-            `Last action: ${action} at ${time}`;
+            `Hành động cuối cùng: ${action} tại ${time}`;
     }
     
     // Request Rate
