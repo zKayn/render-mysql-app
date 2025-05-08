@@ -1,30 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Sản phẩm - DPL Shop</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .cloud-info {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #e3f2fd;
-            border-radius: 8px;
-            border-left: 5px solid #2196F3;
-        }
-        
-        .cloud-info h3 {
-            margin-top: 0;
-            color: #0d47a1;
-        }
-        
         .nav-links {
             display: flex;
             gap: 15px;
             margin: 15px 0 25px 0;
         }
-        
+
         .nav-links a {
             padding: 8px 16px;
             text-decoration: none;
@@ -33,27 +21,27 @@
             border-radius: 4px;
             transition: all 0.3s;
         }
-        
+
         .nav-links a.active {
             background-color: #4CAF50;
             color: white;
         }
-        
+
         .nav-links a:hover:not(.active) {
             background-color: #e0e0e0;
         }
-        
+
         header {
             margin-bottom: 20px;
             border-bottom: 1px solid #eee;
             padding-bottom: 15px;
         }
-        
+
         header h1 {
             margin-bottom: 10px;
             color: #333;
         }
-        
+
         .loading-indicator {
             position: fixed;
             top: 0;
@@ -70,6 +58,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -81,7 +70,7 @@
                 <a href="loadbalancer.html">Load Balancer</a>
             </div>
         </header>
-        
+
         <div class="form-container">
             <h2>Thêm/Cập nhật Sản phẩm</h2>
             <form id="productForm">
@@ -98,7 +87,7 @@
                 <button type="button" id="cancelBtn" class="btn btn-secondary" style="display: none;">Hủy</button>
             </form>
         </div>
-        
+
         <div class="products-container">
             <h2>Danh sách Sản phẩm</h2>
             <table>
@@ -117,4 +106,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -339,7 +339,7 @@
             // Update auto-scaling toggle
             document.getElementById('autoScalingToggle').checked = data.autoScalingEnabled;
             document.getElementById('autoScalingStatus').textContent = 
-                data.autoScalingEnabled ? 'Enabled' : 'Disabled';
+                data.autoScalingEnabled ? 'Đã bật' : 'Đã tắt';
             
             // Update servers
             updateServers(data.servers);
@@ -451,7 +451,7 @@
                 if (response.ok) {
                     // Update UI immediately
                     document.getElementById('autoScalingStatus').textContent = 
-                        enabled ? 'Enabled' : 'Disabled';
+                        enabled ? 'Đã bật' : 'Đã tắt';
                 }
             } catch (error) {
                 console.error('Error toggling auto-scaling:', error);
