@@ -80,7 +80,7 @@ class CloudLogger {
   }
 
   async performance(action, duration) {
-    return this.log('hiệu suất', `${action} hoàn thành vào ${duration}ms`, { duration });
+    return this.log('performance', `${action} completed in ${duration}ms`, { duration });
   }
   
   // Lấy logs từ bộ nhớ hoặc từ file
