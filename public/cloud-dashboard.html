@@ -13,7 +13,8 @@
             <h1>Cloud Monitoring Dashboard</h1>
             <div class="nav-links">
                 <a href="index.html">Quản lý Sản phẩm</a>
-                <a href="cloud-dashboard.html" class="active">Cloud Dashboard</a>
+                <a href="cloud-dashboard.html" class="active"
+                >Cloud Dashboard</a>
                 <a href="replication.html">Data Replication</a>
                 <a href="loadbalancer.html">Load Balancer</a>
             </div>
@@ -21,62 +22,62 @@
         
         <div class="dashboard-container">
             <div class="metrics-panel">
-                <h2>System Metrics</h2>
+                <h2>Hệ thống số liệu</h2>
                 <div class="metrics-grid">
                     <div class="metric-card">
-                        <h3>CPU Usage</h3>
+                        <h3>Sử dụng CPU</h3>
                         <div class="metric-value" id="cpuUsage">0%</div>
                         <div class="progress-bar">
                             <div class="progress" id="cpuBar" style="width: 0%"></div>
                         </div>
                     </div>
                     <div class="metric-card">
-                        <h3>Memory Usage</h3>
+                        <h3>Sử dụng bộ nhớ</h3>
                         <div class="metric-value" id="memoryUsage">0%</div>
                         <div class="progress-bar">
                             <div class="progress" id="memoryBar" style="width: 0%"></div>
                         </div>
                     </div>
                     <div class="metric-card">
-                        <h3>Auto-scaling</h3>
-                        <div class="metric-value" id="instanceCount">1 instance</div>
-                        <div id="scaleStatus">No recent scaling actions</div>
+                        <h3>Tự động điều chỉnh tỷ lệ</h3>
+                        <div class="metric-value" id="instanceCount">1 ví dụ</div>
+                        <div id="scaleStatus">Không có hành động mở rộng quy mô gần đây</div>
                     </div>
                     <div class="metric-card">
-                        <h3>Request Rate</h3>
+                        <h3>Tỷ lệ yêu cầu</h3>
                         <div class="metric-value" id="requestRate">0 req/min</div>
                     </div>
                 </div>
             </div>
             
             <div class="chart-container">
-                <h2>Response Time Monitoring</h2>
+                <h2>Giám sát thời gian phản hồi</h2>
                 <canvas id="responseTimeChart"></canvas>
             </div>
             
             <div class="logs-container">
-                <h2>Application Logs</h2>
+                <h2>Nhật ký ứng dụng</h2>
                 <div class="logs-header">
                     <div class="log-filter">
-                        <label for="logLevel">Filter by level:</label>
+                        <label for="logLevel">Lọc theo cấp độ:</label>
                         <select id="logLevel">
-                            <option value="all">All Levels</option>
-                            <option value="info">Info</option>
-                            <option value="error">Error</option>
-                            <option value="warning">Warning</option>
-                            <option value="performance">Performance</option>
+                            <option value="all">Tất cả các cấp độ</option>
+                            <option value="info">Thông tin</option>
+                            <option value="error">Lỗi</option>
+                            <option value="warning">Cảnh báo</option>
+                            <option value="performance">Hiệu suất</option>
                         </select>
                     </div>
-                    <button id="refreshLogs">Refresh Logs</button>
+                    <button id="refreshLogs">Làm mới Nhật ký</button>
                 </div>
                 <div class="logs-table-container">
                     <table class="logs-table">
                         <thead>
                             <tr>
-                                <th>Timestamp</th>
-                                <th>Level</th>
-                                <th>Message</th>
-                                <th>Details</th>
+                                <th>Dấu thời gian</th>
+                                <th>Mức độ</th>
+                                <th>Tin nhắn</th>
+                                <th>Chi tiết</th>
                             </tr>
                         </thead>
                         <tbody id="logsTableBody"></tbody>

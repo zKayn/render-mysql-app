@@ -185,35 +185,35 @@
         
         <div class="dashboard-container">
             <div class="metrics-panel">
-                <h2>Load Balancer Status</h2>
+                <h2>Trạng thái cân bằng tải</h2>
                 
                 <div class="controls-panel">
                     <div class="control-group">
-                        <h3>Thuật toán cân bằng tải</h3>
+                        <h3>Thuật toán</h3>
                         <div class="algorithm-selector">
-                            <button class="algorithm-btn" data-algorithm="round-robin">Round Robin</button>
-                            <button class="algorithm-btn" data-algorithm="least-connections">Least Connections</button>
-                            <button class="algorithm-btn" data-algorithm="weighted">Weighted</button>
+                            <button class="algorithm-btn" data-algorithm="round-robin">Vòng tròn</button>
+                            <button class="algorithm-btn" data-algorithm="least-connections">Kết nối ít nhất</button>
+                            <button class="algorithm-btn" data-algorithm="weighted">Có trọng số</button>
                         </div>
                     </div>
                     
                     <div class="control-group">
-                        <h3>Auto-scaling</h3>
+                        <h3>Tự động điều chỉnh tỷ lệ</h3>
                         <div>
                             <label class="switch">
                                 <input type="checkbox" id="autoScalingToggle" checked>
                                 <span class="slider"></span>
                             </label>
-                            <span id="autoScalingStatus">Enabled</span>
+                            <span id="autoScalingStatus">Đã bật</span>
                         </div>
                     </div>
                     
                     <div class="control-group">
-                        <h3>Load Test</h3>
+                        <h3>Kiểm tra tải</h3>
                         <div class="load-test-form">
-                            <label for="loadAmount">Load Amount:</label>
+                            <label for="loadAmount">Số lượng tải:</label>
                             <input type="number" id="loadAmount" min="1" max="50" value="10">
-                            <button id="sendRequestBtn">Send Request</button>
+                            <button id="sendRequestBtn">Gửi yêu cầu</button>
                         </div>
                     </div>
                 </div>
@@ -227,14 +227,14 @@
                 </div>
                 
                 <div class="request-log">
-                    <h3>Recent Requests</h3>
+                    <h3>Yêu cầu gần đây</h3>
                     <table>
                         <thead>
                             <tr>
-                                <th>Time</th>
-                                <th>Request ID</th>
-                                <th>Server</th>
-                                <th>Load Amount</th>
+                                <th>Thời gian</th>
+                                <th>Yêu cầu ID</th>
+                                <th>Máy chủ</th>
+                                <th>Tải lượng</th>
                             </tr>
                         </thead>
                         <tbody id="requestLogTable">
