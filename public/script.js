@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:5000';
+const API_URL = 'https://render-mysql-app.onrender.com';
 
 // DOM Elements
 const productForm = document.getElementById('productForm');
