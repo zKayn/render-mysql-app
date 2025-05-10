@@ -28,9 +28,33 @@ app.use('/search', searchRoutes);
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+// Route kiểm tra kết nối
+app.get('/api/status', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    time: new Date().toISOString()
+  });
+});
 
 // Khởi động server
 const PORT = process.env.PORT || 5000;
+// Middleware xử lý lỗi toàn cầu
+app.use((err, req, res, next) => {
+  console.error("Lỗi máy chủ:", err);
+  res.status(500).json({
+    error: "Lỗi máy chủ nội bộ",
+    message: err.message || "Đã xảy ra lỗi"
+  });
+});
+
+// Xử lý lỗi không bắt được
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+});
 app.listen(PORT, () => {
   console.log(`Máy chủ chạy trên cổng ${PORT}`);
 });
