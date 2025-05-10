@@ -14,5 +14,6 @@ router.get('/:id', getProductById);
 router.post('/add', addProduct);
 router.put('/:id', updateProduct);
 router.delete('/:id', deleteProduct);
+router.patch('/:id/category', require('../controllers/productController').updateProductCategory);
 
 module.exports = router;

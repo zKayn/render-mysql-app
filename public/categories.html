@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Danh mục - DPL Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0 25px 0;
+        }
+
+        .nav-links a {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #444;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .nav-links a:hover:not(.active) {
+            background-color: #e0e0e0;
+        }
+
+        header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>DPL Shop - Quản lý Danh mục</h1>
+            <div class="nav-links">
+                <a href="index.html">Quản lý Sản phẩm</a>
+                <a href="categories.html" class="active">Quản lý Danh mục</a>
+            </div>
+        </header>
+
+        <div class="form-container">
+            <h2>Thêm/Cập nhật Danh mục</h2>
+            <form id="categoryForm">
+                <input type="hidden" id="categoryId">
+                <div class="form-group">
+                    <label for="name">Tên danh mục:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Mô tả:</label>
+                    <textarea id="description" rows="3"></textarea>
+                </div>
+                <button type="submit" id="submitBtn" class="btn">Thêm Danh mục</button>
+                <button type="button" id="cancelBtn" class="btn btn-secondary" style="display: none;">Hủy</button>
+            </form>
+        </div>
+
+        <div class="categories-container">
+            <h2>Danh sách Danh mục</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Mô tả</th>
+                        <th>Số SP</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="categoryList"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="categories.js"></script>
+</body>
+
+</html>

@@ -4,6 +4,8 @@ require('dotenv').config();
 const path = require('path');
 const { testConnection } = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 
 const app = express();
 
@@ -19,6 +21,8 @@ testConnection();
 
 // Routes
 app.use('/products', productRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/search', searchRoutes);
 
 // Route mặc định
 app.get("/", (req, res) => {

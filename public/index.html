@@ -65,6 +65,7 @@
             <h1>DPL Shop - Quản lý Sản phẩm</h1>
             <div class="nav-links">
                 <a href="index.html" class="active">Quản lý Sản phẩm</a>
+                <a href="categories.html">Quản lý Danh mục</a>
             </div>
         </header>
 
@@ -85,6 +86,14 @@
             </form>
         </div>
 
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+            <select id="categoryFilter">
+                <option value="">Tất cả danh mục</option>
+            </select>
+            <button id="searchBtn">Tìm kiếm</button>
+        </div>
+
         <div class="products-container">
             <h2>Danh sách Sản phẩm</h2>
             <table>
@@ -93,11 +102,23 @@
                         <th>ID</th>
                         <th>Tên</th>
                         <th>Giá (VNĐ)</th>
+                        <th>Danh mục</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody id="productList"></tbody>
             </table>
+        </div>
+
+        <div class="pagination">
+            <button id="prevPage" disabled>Trang trước</button>
+            <span id="pageInfo">Trang 1 của 1</span>
+            <button id="nextPage" disabled>Trang sau</button>
+            <select id="itemsPerPage">
+                <option value="5">5 mục</option>
+                <option value="10" selected>10 mục</option>
+                <option value="20">20 mục</option>
+            </select>
         </div>
     </div>
 
