@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'https://render-mysql-app.onrender.com'; 
+const API_URL = 'https://render-mysql-app.onrender.com'; // Thay thế bằng URL thực tế của bạn
 
 // DOM Elements
 const productForm = document.getElementById('productForm');
@@ -55,31 +55,46 @@ function formatCurrency(amount) {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 }
 
-// Add Product
-async function addProduct(product) {
-    try {
-        const response = await fetch(`${API_URL}/products/add`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(product)
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-            alert('Sản phẩm đã được thêm thành công!');
-            resetForm();
-            getProducts();
-        } else {
-            alert(`Lỗi: ${data.message}`);
-        }
-    } catch (error) {
-        console.error('Error adding product:', error);
-        alert('Không thể thêm sản phẩm.');
+// Thêm sản phẩm mới
+const addProduct = async (req, res) => {
+  try {
+    console.log("Dữ liệu nhận được:", req.body);
+    const { name, price } = req.body;
+    
+    if (!name) {
+      console.log("Thiếu tên sản phẩm");
+      return res.status(400).json({ message: "Thiếu tên sản phẩm" });
     }
-}
+    
+    if (price === undefined || price === null || isNaN(parseFloat(price))) {
+      console.log("Giá sản phẩm không hợp lệ:", price);
+      return res.status(400).json({ message: "Giá sản phẩm không hợp lệ" });
+    }
+
+    // Chuyển đổi price thành số thực
+    const priceValue = parseFloat(price);
+    
+    console.log("Đang thêm sản phẩm:", { name, price: priceValue });
+
+    const [result] = await pool.execute(
+      "INSERT INTO products (name, price) VALUES (?, ?)", 
+      [name, priceValue]
+    );
+    
+    console.log("Sản phẩm đã được thêm:", result);
+    
+    res.status(201).json({ 
+      message: "Sản phẩm được thêm thành công!", 
+      id: result.insertId 
+    });
+  } catch (err) {
+    console.error("Lỗi khi thêm sản phẩm:", err);
+    res.status(500).json({ 
+      error: "Không thể thêm sản phẩm", 
+      details: err.message 
+    });
+  }
+};
 
 // Get Product by ID
 async function getProductById(id) {
