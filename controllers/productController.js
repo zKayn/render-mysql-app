@@ -81,39 +81,10 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// Cập nhật sản phẩm với danh mục
-const updateProductCategory = async (req, res) => {
-  const { id } = req.params;
-  const { category_id } = req.body;
-
-  try {
-    // Kiểm tra trường category_id tồn tại
-    try {
-      await pool.execute("SELECT category_id FROM products LIMIT 1");
-    } catch (error) {
-      // Thêm cột category_id nếu chưa tồn tại
-      await pool.execute("ALTER TABLE products ADD COLUMN category_id INT");
-    }
-
-    const [result] = await pool.execute("UPDATE products SET category_id = ? WHERE id = ?", [category_id, id]);
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-    }
-
-    res.json({ message: "Danh mục sản phẩm đã được cập nhật" });
-  } catch (err) {
-    console.error("Lỗi cập nhật danh mục sản phẩm:", err);
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Cập nhật module.exports
 module.exports = {
   getAllProducts,
   getProductById,
   addProduct,
   updateProduct,
-  deleteProduct,
-  updateProductCategory
+  deleteProduct
 };
